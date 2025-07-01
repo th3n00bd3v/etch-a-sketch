@@ -1,41 +1,43 @@
 // script.js
 let currentGridSize = 16;
+let isPainting = false;
 
 // Initialize the grid when page loads
 document.addEventListener('DOMContentLoaded', function() {
     createGrid(currentGridSize);
     setupNewGridButton();
+
+    // Track mouse state globally
+    document.body.addEventListener('mousedown', () => isPainting = true);
+    document.body.addEventListener('mouseup', () => isPainting = false);
 });
 
 function createGrid(size) {
     const container = document.getElementById('container');
-    
-    // Clear existing grid
     container.innerHTML = '';
-    
-    // Calculate square size based on container size (960px)
-    const squareSize = 960 / size;
-    
-    // Create grid squares
+
+    // Calculate square size based on container's computed size for responsiveness
+    const containerSize = container.offsetWidth;
+    const squareSize = containerSize / size;
+
     for (let i = 0; i < size * size; i++) {
         const square = document.createElement('div');
         square.classList.add('grid-square');
-        
-        // Set size for each square
         square.style.width = `${squareSize}px`;
         square.style.height = `${squareSize}px`;
-        
-        // Initialize interaction count for progressive darkening
         square.dataset.interactions = '0';
-        
-        // Add hover effect with random colors and progressive darkening
+
+        // Paint on mouseenter (hover) only
         square.addEventListener('mouseenter', function() {
             handleSquareInteraction(this);
         });
-        
+
         container.appendChild(square);
     }
-    
+
+    // Prevent default drag behavior
+    container.onmousedown = (e) => e.preventDefault();
+
     console.log(`Grid created with ${size}x${size} squares`);
 }
 

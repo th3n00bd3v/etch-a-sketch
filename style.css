@@ -17,10 +17,15 @@ body {
 #container {
   display: flex;
   flex-wrap: wrap;
-  width: 960px;
-  height: 960px;
+  width: 90vw;
+  max-width: 960px;
+  height: 90vw;
+  max-height: 960px;
+  aspect-ratio: 1 / 1;
   border: 2px solid #333;
   background-color: white;
+  box-sizing: border-box;
+  transition: width 0.3s, height 0.3s;
 }
 
 .square {
@@ -28,4 +33,42 @@ body {
   border: 1px solid #ccc;
   background-color: white;
   transition: background-color 0.2s;
+}
+
+/* Add for painting experience */
+.grid-square {
+  user-select: none;
+}
+
+.header {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+
+@media (max-width: 600px) {
+  #container {
+    width: 98vw;
+    height: 98vw;
+    max-width: 98vw;
+    max-height: 98vw;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 2vw;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  #newGridBtn {
+    font-size: 1rem;
+    margin-top: 10px;
+  }
 }
