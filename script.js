@@ -17,14 +17,20 @@ function createGrid(size) {
     container.innerHTML = '';
 
     // Calculate square size based on container's computed size for responsiveness
-    const containerSize = container.offsetWidth;
-    const squareSize = containerSize / size;
+    // Use getBoundingClientRect to get the actual rendered size
+    const containerRect = container.getBoundingClientRect();
+    const containerSize = Math.min(containerRect.width, containerRect.height);
+    const squareSize = Math.floor(containerSize / size); // Use floor to avoid overflow
+
+    // Set container to relative to contain absolutely positioned overlays
+    container.style.position = 'relative';
 
     for (let i = 0; i < size * size; i++) {
         const square = document.createElement('div');
         square.classList.add('grid-square');
         square.style.width = `${squareSize}px`;
         square.style.height = `${squareSize}px`;
+        square.style.position = 'relative'; // Ensure overlays are contained
         square.dataset.interactions = '0';
 
         // Paint on mouseenter (hover) only
@@ -34,6 +40,10 @@ function createGrid(size) {
 
         container.appendChild(square);
     }
+
+    // Adjust container's height to fit the grid exactly (avoid extra row)
+    container.style.height = `${squareSize * size}px`;
+    container.style.width = `${squareSize * size}px`;
 
     // Prevent default drag behavior
     container.onmousedown = (e) => e.preventDefault();
